@@ -26,17 +26,18 @@ Se requiere un servicio que simule el diagnóstico de una enfermedad a partir de
 
 ## 🗂️ Estructura del proyecto
 
-.
-├── README.md                    # Este archivo
-├── requirements.txt               # Dependencias de Python
-├── .gitignore                       	 # Archivos a excluir de Git
-├── src/                             	 # Código fuente del servicio
-│   ├── app.py                        # Aplicación Flask principal
+```
+├── README.md                       # Este archivo
+├── requirements.txt                # Dependencias de Python
+├── .gitignore                      # Archivos a excluir de Git
+├── src/                            # Código fuente del servicio
+│   ├── app.py                      # Aplicación Flask principal
 │   ├── model.py                    # Función de diagnóstico médico
-│   ├── app.py                        # Aplicación Flask principal
+│   ├── app.py                      # Aplicación Flask principal
 │   └── templates/                  # Plantillas HTML
 │       └── index.html              # Interfaz web
-└── Dockerfile                        # Dockerfile
+└── Dockerfile                      # Dockerfile
+```
 
 ---
 
@@ -124,6 +125,7 @@ Endpoints:
 - `GET /api/report`: Respuesta JSON con las estadísticas.
 
 Notas:
+
 - El log se guarda en `src/data/predictions_log.jsonl` (1 predicción por línea en formato JSON).
 - El almacenamiento es local al contenedor/proceso. Para persistencia entre despliegues, monte un volumen o integre una base de datos.
 
