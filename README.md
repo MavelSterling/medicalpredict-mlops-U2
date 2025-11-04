@@ -1,4 +1,3 @@
-
 # medicalpredict-mlops-U2
 
 Predicción simplificada de enfermedades en pacientes y preparación del repositorio para prácticas de MLOps (ramas, PRs, versionado y CI/CD con GitHub Actions).
@@ -28,16 +27,15 @@ Se requiere un servicio que simule el diagnóstico de una enfermedad a partir de
 ## 🗂️ Estructura del proyecto
 
 .
-├── README.md                     # Este archivo
-├── requirements.txt                # Dependencias de Python
-├── .gitignore                           # Archivos a excluir de Git
-├── src/                                    # Código fuente del servicio
-│   ├── app.py                          # Aplicación Flask principal
-│   ├── model.py                      # Función de diagnóstico médico
-│   ├── requirements.txt           # Dependencias (si la U1 las incluyó aquí)
-│   └── templates/                    # Plantillas HTML
-│       └── index.html                # Interfaz web
-└── Dockerfile                          # Dockerfile
+├── README.md                       # Este archivo
+├── requirements.txt                  # Dependencias de Python
+├── .gitignore                             # Archivos a excluir de Git
+├── src/                                      # Código fuente del servicio
+│   ├── app.py                            # Aplicación Flask principal
+│   ├── model.py                        # Función de diagnóstico médico
+│   └── templates/                      # Plantillas HTML
+│       └── index.html                  # Interfaz web
+└── Dockerfile                           # Dockerfile
 
 ---
 
