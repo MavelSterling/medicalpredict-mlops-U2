@@ -117,7 +117,7 @@ def api_documentation():
                     }
                 },
                 'response': {
-                    'diagnosis': 'NO_ENFERMO | ENFERMEDAD_LEVE | ENFERMEDAD_AGUDA | ENFERMEDAD_CRONICA',
+                    'diagnosis': 'NO_ENFERMO | ENFERMEDAD_LEVE | ENFERMEDAD_AGUDA | ENFERMEDAD_CRONICA | ENFERMEDAD_TERMINAL',
                     'confidence': 'Confianza del diagnóstico (0-1)',
                     'most_likely_condition': 'Condición más probable',
                     'recommendations': 'Lista de recomendaciones'

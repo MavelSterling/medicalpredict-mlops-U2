@@ -511,7 +511,7 @@
         });
         
         function displayResults(result) {
-            const diagnosis = result.diagnosis;                      // NO_ENFERMO / MOLESTIAS_LEVES / ENFERMEDAD_LEVE / ...
+            const diagnosis = result.diagnosis;                      // NO_ENFERMO / ENFERMEDAD_LEVE / ENFERMEDAD_AGUDA / ENFERMEDAD_CRONICA / ENFERMEDAD_TERMINAL
             const confidence = result.confidence;                    // score global síntomas
             const condition = result.most_likely_condition;          // ej "infeccion_respiratoria"
             const showCondition = result.show_condition;             // true/false según severidad
@@ -526,9 +526,9 @@
                     diagnosisClass = 'diagnosis-no-enfermo';
                     diagnosisText = '✅ NO ENFERMO';
                     break;
-                case 'MOLESTIAS_LEVES':
-                    diagnosisClass = 'diagnosis-molestias-leves';
-                    diagnosisText = '🙂 MOLESTIAS LEVES';
+                case 'ENFERMEDAD_TERMINAL':
+                    diagnosisClass = 'diagnosis-terminal';
+                    diagnosisText = '🆘 ENFERMEDAD TERMINAL';
                     break;
                 case 'ENFERMEDAD_LEVE':
                     diagnosisClass = 'diagnosis-leve';

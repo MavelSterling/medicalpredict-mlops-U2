@@ -27,15 +27,15 @@ Se requiere un servicio que simule el diagnóstico de una enfermedad a partir de
 ## 🗂️ Estructura del proyecto
 
 .
-├── README.md                       # Este archivo
-├── requirements.txt                  # Dependencias de Python
-├── .gitignore                             # Archivos a excluir de Git
-├── src/                                      # Código fuente del servicio
-│   ├── app.py                            # Aplicación Flask principal
-│   ├── model.py                        # Función de diagnóstico médico
-│   └── templates/                      # Plantillas HTML
-│       └── index.html                  # Interfaz web
-└── Dockerfile                           # Dockerfile
+├── README.md                    # Este archivo
+├── requirements.txt               # Dependencias de Python
+├── .gitignore                       	 # Archivos a excluir de Git
+├── src/                             	 # Código fuente del servicio
+│   ├── app.py                        # Aplicación Flask principal
+│   ├── model.py                    # Función de diagnóstico médico
+│   └── templates/                  # Plantillas HTML
+│       └── index.html              # Interfaz web
+└── Dockerfile                        # Dockerfile
 
 ---
 
@@ -97,13 +97,13 @@ docker run -p 5000:5000 medical-diagnosis-service
 
 ## 🏥 Servicio de Diagnóstico
 
-El servicio permite a los médicos ingresar síntomas del paciente y obtener un diagnóstico en tiempo real con los siguientes estados:
+El servicio permite a los médicos ingresar síntomas del paciente y obtener un diagnóstico en tiempo real con los siguientes estados (5 categorías):
 
-- **NO ENFERMO**: Paciente sin indicios de enfermedad
-- **MOLESTIAS LEVES**: Paciente con síntomas o molestias muy leves
+- **NO ENFERMO**: Paciente sin indicios de enfermedad o con molestias muy leves
 - **ENFERMEDAD LEVE**: Síntomas leves que requieren observación
 - **ENFERMEDAD AGUDA**: Condición que requiere atención inmediata
 - **ENFERMEDAD CRÓNICA**: Condición de larga duración que requiere tratamiento continuo
+- **ENFERMEDAD TERMINAL**: Emergencia médica inmediata
 
 ---
 
@@ -113,10 +113,11 @@ A continuación, se muestran algunos ejemplos de casos de uso:
 
 - Nota: para evaluar correctamente, se deben ingresar mínimo 3 síntomas por paciente.
 - `fatiga=2`, `dolor_muscular=1`, `mareos=1` → Diagnóstico esperado: **NO ENFERMO**
-- `fiebre=3`, `dolor_cabeza=3`, `dificultad_respirar=5` → Diagnóstico esperado: **MOLESTIAS LEVES**
+- `fiebre=3`, `dolor_cabeza=3`, `dificultad_respirar=5` → Diagnóstico esperado: **ENFERMEDAD LEVE**
 - `fiebre=10`, `dolor_pecho=8`, `dificultad_respirar=7` → Diagnóstico esperado: **ENFERMEDAD LEVE**
 - `dolor_pecho=7`, `dificultad_respirar=9`, `fatiga=8` → Diagnóstico esperado: **ENFERMEDAD AGUDA**
 - `dolor_pecho=10`, `Tos=10`, `dificultad_respirar=10` → Diagnóstico esperado: **ENFERMEDAD CRÓNICA**
+- `dificultad_respirar=10`, `dolor_pecho=10`, `confusion=10`, `convulsiones=10` → Diagnóstico esperado: **ENFERMEDAD TERMINAL**
 
 ---
 
