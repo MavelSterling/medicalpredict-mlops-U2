@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y \
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 # Copiar archivos de dependencias
-COPY src/requirements.txt .
+COPY requirements.txt .
 
 # Instalar dependencias de Python
 RUN pip install --no-cache-dir --upgrade pip && \
