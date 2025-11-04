@@ -26,5 +26,5 @@ gunicorn==21.2.0
 
 # CORS para desarrollo
 flask-cors==4.0.0
+pytz==2024.1
 
-requests==2.31.0

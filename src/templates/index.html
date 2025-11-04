@@ -312,6 +312,9 @@
         <div class="header">
             <h1>🏥 Sistema de Diagnóstico Médico</h1>
             <p>Diagnóstico asistido por Inteligencia Artificial - MLOps Pipeline</p>
+            <div style="margin-top: 10px;">
+                <a href="/report" style="color: #ecf0f1; text-decoration: none; border: 1px solid #ecf0f1; padding: 6px 12px; border-radius: 6px;">📈 Ver Reporte</a>
+            </div>
         </div>
 
         <div class="main-content">
@@ -583,6 +586,10 @@
                         <ul>
                             ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
                         </ul>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="button" class="submit-btn" onclick="window.location.reload()">🔄 Nuevo Diagnóstico</button>
                     </div>
                 </div>
             `;
