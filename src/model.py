@@ -23,10 +23,10 @@ class MedicalDiagnosisModel:
     2. Se evalúa qué patrón de enfermedad es más probable (pattern_scores).
     3. Con ambos se estima severidad (determine_severity).
     4. Según severidad:
-        - NO_ENFERMO / MOLESTIAS_LEVES:
+        - NO_ENFERMO:
             -> No mostramos diagnóstico tipo "infección respiratoria".
             -> Recomendaciones suaves (descanso / hidratación).
-        - ENFERMEDAD_LEVE / ENFERMEDAD_AGUDA / ENFERMEDAD_CRONICA:
+        - ENFERMEDAD_LEVE / ENFERMEDAD_AGUDA / ENFERMEDAD_CRONICA / ENFERMEDAD_TERMINAL:
             -> Sí mostramos la condición más probable.
             -> Recomendaciones más estrictas.
     """
@@ -139,32 +139,31 @@ class MedicalDiagnosisModel:
         pattern_scores: Dict[str, float]
     ) -> Tuple[str, float]:
         """
-        Determina severidad clínica de forma determinista y robusta.
+        Determina severidad clínica con 5 categorías:
 
         adjusted_score = promedio entre:
           - gravedad global de síntomas (overall_score),
           - el patrón de enfermedad más fuerte (max_pattern_score).
 
-        Clasificación:
-        NO_ENFERMO         adjusted_score < 0.15
-        MOLESTIAS_LEVES    0.15 - 0.30
-        ENFERMEDAD_LEVE    0.30 - 0.60
-        ENFERMEDAD_AGUDA   0.60 - 0.80
-        ENFERMEDAD_CRONICA >= 0.80
+        NO_ENFERMO           adjusted_score < 0.20
+        ENFERMEDAD_LEVE      0.20 - 0.50
+        ENFERMEDAD_AGUDA     0.50 - 0.75
+        ENFERMEDAD_CRONICA   0.75 - 0.93
+        ENFERMEDAD_TERMINAL  >= 0.93
         """
         max_pattern_score = max(pattern_scores.values()) if pattern_scores else 0.0
         adjusted_score = (overall_score + max_pattern_score) / 2.0
 
-        if adjusted_score < 0.15:
+        if adjusted_score < 0.20:
             severity_selected = 'NO_ENFERMO'
-        elif adjusted_score < 0.30:
-            severity_selected = 'MOLESTIAS_LEVES'
-        elif adjusted_score < 0.60:
+        elif adjusted_score < 0.50:
             severity_selected = 'ENFERMEDAD_LEVE'
-        elif adjusted_score < 0.80:
+        elif adjusted_score < 0.75:
             severity_selected = 'ENFERMEDAD_AGUDA'
-        else:
+        elif adjusted_score < 0.93:
             severity_selected = 'ENFERMEDAD_CRONICA'
+        else:
+            severity_selected = 'ENFERMEDAD_TERMINAL'
 
         return severity_selected, adjusted_score
 
@@ -203,11 +202,10 @@ class MedicalDiagnosisModel:
                 )
 
             # Reglas de coherencia con el front:
-            # - NO_ENFERMO / MOLESTIAS_LEVES:
-            #   * no mostramos condición específica
-            # - ENFERMEDAD_LEVE / ENFERMEDAD_AGUDA / ENFERMEDAD_CRONICA:
+            # - NO_ENFERMO: no mostramos condición específica
+            # - ENFERMEDAD_LEVE / ENFERMEDAD_AGUDA / ENFERMEDAD_CRONICA / ENFERMEDAD_TERMINAL:
             #   * sí mostramos condición probable
-            if severity in ["NO_ENFERMO", "MOLESTIAS_LEVES"]:
+            if severity == "NO_ENFERMO":
                 show_condition = False
                 most_likely_disease = "ninguna"
                 most_likely_score = 0.0
@@ -248,10 +246,11 @@ class MedicalDiagnosisModel:
     def _generate_recommendations(self, severity: str) -> List[str]:
         """
         Recomendaciones basadas en severidad clínica.
-        NO_ENFERMO / MOLESTIAS_LEVES -> autocuidado básico.
+        NO_ENFERMO -> autocuidado básico.
         ENFERMEDAD_LEVE -> control en casa + considerar consulta.
         ENFERMEDAD_AGUDA -> atención médica pronto.
         ENFERMEDAD_CRONICA -> urgente.
+        ENFERMEDAD_TERMINAL -> emergencia inmediata.
         """
         if severity == 'NO_ENFERMO':
             return [
@@ -261,13 +260,6 @@ class MedicalDiagnosisModel:
                 "Observar si aparecen nuevos síntomas o si alguno empeora"
             ]
 
-        if severity == 'MOLESTIAS_LEVES':
-            return [
-                "Molestias leves: reposo y buena hidratación",
-                "Dormir bien y evitar sobreesfuerzos",
-                "Usar analgésicos comunes si es necesario y no hay contraindicaciones",
-                "Consultar con un profesional si los síntomas aumentan o duran más de 48h"
-            ]
 
         if severity == 'ENFERMEDAD_LEVE':
             return [
@@ -292,6 +284,14 @@ class MedicalDiagnosisModel:
                 "Buscar atención especializada inmediatamente",
                 "Posible necesidad de intervención hospitalaria",
                 "Seguimiento médico continuo recomendado"
+            ]
+
+        if severity == 'ENFERMEDAD_TERMINAL':
+            return [
+                "EMERGENCIA MÉDICA INMEDIATA",
+                "Llamar a servicios de urgencias ahora",
+                "No conducir; solicitar asistencia de terceros",
+                "Prepararse para soporte vital avanzado"
             ]
 
         # fallback
