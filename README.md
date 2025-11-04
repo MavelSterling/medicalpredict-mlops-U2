@@ -33,6 +33,7 @@ Se requiere un servicio que simule el diagnóstico de una enfermedad a partir de
 ├── src/                             	 # Código fuente del servicio
 │   ├── app.py                        # Aplicación Flask principal
 │   ├── model.py                    # Función de diagnóstico médico
+│   ├── app.py                        # Aplicación Flask principal
 │   └── templates/                  # Plantillas HTML
 │       └── index.html              # Interfaz web
 └── Dockerfile                        # Dockerfile
@@ -92,6 +93,8 @@ docker run -p 5000:5000 medical-diagnosis-service
 
 3. **Acceder al servicio:**
    - Interfaz web: http://localhost:5000
+   - Reporte HTML: http://localhost:5000/report
+   - Reporte JSON: http://localhost:5000/api/report
 
 ---
 
@@ -107,6 +110,23 @@ El servicio permite a los médicos ingresar síntomas del paciente y obtener un 
 
 ---
 
+## 📈 Reporte de Predicciones
+
+Se registra cada predicción realizada en un log local y se expone un reporte con estadísticas básicas:
+
+- Número total de predicciones realizadas por categoría.
+- Últimas 5 predicciones realizadas.
+- Fecha de la última predicción.
+
+Endpoints:
+
+- `GET /report`: Vista HTML con el reporte para médicos.
+- `GET /api/report`: Respuesta JSON con las estadísticas.
+
+Notas:
+- El log se guarda en `src/data/predictions_log.jsonl` (1 predicción por línea en formato JSON).
+- El almacenamiento es local al contenedor/proceso. Para persistencia entre despliegues, monte un volumen o integre una base de datos.
+
 ## 🧪 Casos de Uso
 
 A continuación, se muestran algunos ejemplos de casos de uso:
@@ -117,7 +137,6 @@ A continuación, se muestran algunos ejemplos de casos de uso:
 - `fiebre=10`, `dolor_pecho=8`, `dificultad_respirar=7` → Diagnóstico esperado: **ENFERMEDAD LEVE**
 - `dolor_pecho=7`, `dificultad_respirar=9`, `fatiga=8` → Diagnóstico esperado: **ENFERMEDAD AGUDA**
 - `dolor_pecho=10`, `Tos=10`, `dificultad_respirar=10` → Diagnóstico esperado: **ENFERMEDAD CRÓNICA**
-- `dificultad_respirar=10`, `dolor_pecho=10`, `confusion=10`, `convulsiones=10` → Diagnóstico esperado: **ENFERMEDAD TERMINAL**
 
 ---
 
