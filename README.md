@@ -14,7 +14,7 @@ Predicción simplificada de enfermedades en pacientes y preparación del reposit
 
 ## 🌡️ Problema
 
-Se requiere un servicio que **simule** el diagnóstico de una enfermedad a partir de datos básicos del paciente (edad, síntomas, condiciones). En esta unidad no entrenamos un modelo real; nos enfocamos en  organizar el repositorio y controlar cambios con Git.
+Se requiere un servicio que simule el diagnóstico de una enfermedad a partir de datos básicos del paciente (edad, síntomas, condiciones). En esta fase no se entrena un modelo real; el enfoque está en la organización del repositorio y el control de cambios con Git.
 
 ---
 
@@ -25,52 +25,109 @@ Se requiere un servicio que **simule** el diagnóstico de una enfermedad a parti
 
 ---
 
-## 📋 Estructura del Proyecto
+## 🗂️ Estructura del proyecto
 
-```
-
-
-├── README.md                           # Este archivo
-├── requirements.txt                    # Dependencias de Python
-├── .gitignore                         # Archivos a excluir de Git
-├── .venv/                             # Entorno virtual de Python
-├── docs/                              # Documentación del pipeline
-│   ├── pipeline_design.md            # Diseño del pipeline de MLOps
-├── src/                              # Código fuente del servicio
-│   ├── app.py                        # Aplicación Flask principal
+.
+├── README.md                     # Este archivo
+├── requirements.txt                # Dependencias de Python
+├── .gitignore                           # Archivos a excluir de Git
+├── src/                                    # Código fuente del servicio
+│   ├── app.py                          # Aplicación Flask principal
 │   ├── model.py                      # Función de diagnóstico médico
-│   ├── requirements.txt              # Dependencias
+│   ├── requirements.txt           # Dependencias (si la U1 las incluyó aquí)
 │   └── templates/                    # Plantillas HTML
-│       └── index.html               # Interfaz web
-├── Dockerfile                       # Dockerfile 
-
-```
+│       └── index.html                # Interfaz web
+└── Dockerfile                          # Dockerfile
 
 ---
 
-## 🚀 Ejecución local
+## 🚀 Inicio Rápido
 
-**Con Python:**
+### Prerrequisitos
+
+- Docker instalado
+- Python 3.8+ (para ejecución sin docker)
+
+### Ejecución sin Docker
+
+1. **Crear entorno virtual:**
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate         # en Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-
-# Predicción simulada (CLI semana 4)
-python -m app.service predict --age 25 --symptoms mild_respiratory
-
-# Ver estadísticas
-python -m app.service stats
 ```
 
-**Con Docker:**
+2. **Activar entorno virtual:**
 
 ```bash
-docker build -t medicalpredict-mlops-u2:latest .
-docker run --rm medicalpredict-mlops-u2:latest predict --age 25 --symptoms mild_respiratory
-docker run --rm -v ${PWD}/data:/app/data medicalpredict-mlops-u2:latest stats
+# Windows
+.venv\Scripts\activate
+
+# Linux/Mac
+source .venv/bin/activate
 ```
+
+3. **Instalar dependencias:**
+
+```bash
+pip install -r requirements.txt
+```
+
+4. **Ejecutar aplicación:**
+
+```bash
+python src/app.py
+```
+
+### Construcción y Ejecución con Docker
+
+1. **Construir la imagen Docker:**
+
+```bash
+docker build -t medical-diagnosis-service .
+```
+
+2. **Ejecutar el contenedor:**
+
+```bash
+docker run -p 5000:5000 medical-diagnosis-service
+```
+
+3. **Acceder al servicio:**
+   - Interfaz web: http://localhost:5000
+
+---
+
+## 🏥 Servicio de Diagnóstico
+
+El servicio permite a los médicos ingresar síntomas del paciente y obtener un diagnóstico en tiempo real con los siguientes estados:
+
+- **NO ENFERMO**: Paciente sin indicios de enfermedad
+- **MOLESTIAS LEVES**: Paciente con síntomas o molestias muy leves
+- **ENFERMEDAD LEVE**: Síntomas leves que requieren observación
+- **ENFERMEDAD AGUDA**: Condición que requiere atención inmediata
+- **ENFERMEDAD CRÓNICA**: Condición de larga duración que requiere tratamiento continuo
+
+---
+
+## 🧪 Casos de Uso
+
+A continuación, se muestran algunos ejemplos de casos de uso:
+
+- Nota: para evaluar correctamente, se deben ingresar mínimo 3 síntomas por paciente.
+- `fatiga=2`, `dolor_muscular=1`, `mareos=1` → Diagnóstico esperado: **NO ENFERMO**
+- `fiebre=3`, `dolor_cabeza=3`, `dificultad_respirar=5` → Diagnóstico esperado: **MOLESTIAS LEVES**
+- `fiebre=10`, `dolor_pecho=8`, `dificultad_respirar=7` → Diagnóstico esperado: **ENFERMEDAD LEVE**
+- `dolor_pecho=7`, `dificultad_respirar=9`, `fatiga=8` → Diagnóstico esperado: **ENFERMEDAD AGUDA**
+- `dolor_pecho=10`, `Tos=10`, `dificultad_respirar=10` → Diagnóstico esperado: **ENFERMEDAD CRÓNICA**
+
+---
+
+## 🔧 Tecnologías Utilizadas
+
+- **Backend**: Python, Flask
+- **Frontend**: HTML, CSS, JavaScript
+- **Containerización**: Docker
+- **ML**: Scikit-learn, Pandas, NumPy
 
 ---
 
