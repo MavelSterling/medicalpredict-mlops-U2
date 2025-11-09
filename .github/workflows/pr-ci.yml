@@ -17,9 +17,11 @@ jobs:
         with:
           script: |
             github.rest.issues.createComment({
-              ...context.issue,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
               body: "CI/CD en acción. Ejecutando tareas …"
-            });
+            })
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,6 +54,8 @@ jobs:
         with:
           script: |
             github.rest.issues.createComment({
-              ...context.issue,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
               body: "CI/CD terminado con éxito."
-            });
+            })
