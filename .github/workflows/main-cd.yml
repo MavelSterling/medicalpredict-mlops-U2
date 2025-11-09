@@ -44,11 +44,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image ref (lowercase)
+        run: echo "IMAGE_REF=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
       - name: Build & Push image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
-            ghcr.io/${{ github.repository }}:latest
+            ${{ env.IMAGE_REF }}:sha-${{ github.sha }}
+            ${{ env.IMAGE_REF }}:latest
